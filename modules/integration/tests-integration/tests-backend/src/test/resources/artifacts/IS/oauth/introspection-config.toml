@@ -24,16 +24,22 @@ url = "$env{SHARED_DATABASE_URL}"
 username = "$env{SHARED_DATABASE_USERNAME}"
 password = "$env{SHARED_DATABASE_PASSWORD}"
 
-[datasource.AgentIdentity]
-id = "AgentIdentity"
-driver = "$env{AGENTIDENTITY_DATABASE_DRIVER}"
-url = "$env{AGENTIDENTITY_DATABASE_URL}"
-username = "$env{AGENTIDENTITY_DATABASE_USERNAME}"
-password = "$env{AGENTIDENTITY_DATABASE_PASSWORD}"
-
 [keystore.primary]
 file_name = "wso2carbon.p12"
 password = "wso2carbon"
 
-[saml.extensions]
-assertion_builder= "org.wso2.carbon.identity.sso.saml.builders.assertion.ExtendedDefaultAssertionBuilder"
+# Configuration for OAuth2 introspection endpoint with BasicClientAuthentication
+[[resource.access_control]]
+context = "(.*)/t/(.*)/o/(.*)/oauth2/introspect(.*)"
+secure = true
+http_method = "all"
+allowed_auth_handlers = ["BasicClientAuthentication"]
+scopes = ["internal_org_oauth2_introspect"]
+
+[[resource.access_control]]
+context = "(.*)/oauth2/introspect(.*)"
+secure = true
+http_method = "all"
+allowed_auth_handlers = ["BasicClientAuthentication"]
+scopes = ["internal_oauth2_introspect"]
+
